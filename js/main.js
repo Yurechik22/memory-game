@@ -1,9 +1,13 @@
-import { el } from './dom.js';
+import { el, plural } from './dom.js';
 import { CARD_SYMBOLS } from './cards-data.js';
 import { createGame } from './game.js';
 import { createBoard } from './board.js';
+import { createModal } from './modal.js';
+import { addResult, loadResults, formatDate } from './leaderboard.js';
 
 const MISMATCH_DELAY_MS = 1000;
+
+const modal = createModal();
 
 /* ---------- Счётчики ---------- */
 
@@ -24,6 +28,50 @@ function createStats() {
   return { element, render };
 }
 
+/* ---------- Модальные окна ---------- */
+
+function openWinModal(moves) {
+  modal.open({
+    title: 'Победа! 🎉',
+    body: [
+      el('p', { text: 'Вы нашли все пары.' }),
+      el('p', { className: 'modal__result', text: `${moves} ${plural(moves, ['ход', 'хода', 'ходов'])}` }),
+    ],
+    actions: [
+      { label: 'Новая игра', variant: 'primary', onClick: () => game.start() },
+      { label: 'Закрыть' },
+    ],
+  });
+}
+
+function createLeaderboardTable(results) {
+  const headRow = el('tr', {}, ['Место', 'Ходы', 'Дата'].map((text) => el('th', { text, attrs: { scope: 'col' } })));
+
+  const rows = results.map((result, index) => el('tr', {}, [
+    el('td', { text: String(index + 1) }),
+    el('td', { text: String(result.moves) }),
+    el('td', { text: formatDate(result.date) }),
+  ]));
+
+  return el('table', { className: 'leaderboard' }, [
+    el('thead', {}, [headRow]),
+    el('tbody', {}, rows),
+  ]);
+}
+
+function openLeaderboardModal() {
+  const results = loadResults();
+  const body = results.length > 0
+    ? [createLeaderboardTable(results)]
+    : [el('p', { className: 'modal__empty', text: 'Пока нет результатов. Сыграйте первую партию!' })];
+
+  modal.open({
+    title: 'Таблица лидеров',
+    body,
+    actions: [{ label: 'Закрыть', variant: 'primary' }],
+  });
+}
+
 /* ---------- Сборка приложения ---------- */
 
 function createHeaderButton({ icon, label, onClick }) {
@@ -42,7 +90,7 @@ function createHeader() {
     el('h1', { className: 'header__title', text: 'Memory' }),
     el('nav', { className: 'header__actions', attrs: { 'aria-label': 'Управление игрой' } }, [
       createHeaderButton({ icon: '↻', label: 'Новая игра', onClick: () => game.start() }),
-      createHeaderButton({ icon: '🏆', label: 'Таблица лидеров', onClick: () => {} }),
+      createHeaderButton({ icon: '🏆', label: 'Таблица лидеров', onClick: openLeaderboardModal }),
     ]),
   ]);
 }
@@ -60,7 +108,10 @@ const game = createGame({
     stats.render(state);
     board.render(state);
   },
-  onWin: () => {},
+  onWin: (moves) => {
+    addResult(moves);
+    openWinModal(moves);
+  },
 });
 
 document.body.prepend(

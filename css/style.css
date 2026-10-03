@@ -200,6 +200,78 @@ body {
   box-shadow: 0 0 0 3px var(--matched), var(--shadow);
 }
 
+/* ---------- Modal ---------- */
+
+.modal {
+  width: min(420px, calc(100% - 32px));
+  padding: 0;
+  border: none;
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 20px 50px rgb(0 0 0 / 0.3);
+}
+
+.modal::backdrop {
+  background: rgb(20 18 35 / 0.6);
+}
+
+.modal__content {
+  padding: 24px;
+}
+
+.modal__title {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+}
+
+.modal__body p {
+  margin: 0 0 8px;
+}
+
+.modal__result {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.modal__empty {
+  color: var(--muted);
+}
+
+.modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* ---------- Leaderboard ---------- */
+
+.leaderboard {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.leaderboard th,
+.leaderboard td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #ece9f2;
+}
+
+.leaderboard th {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.leaderboard tbody tr:first-child td {
+  font-weight: 700;
+}
+
 /* Короткая, но не нулевая анимация, чтобы transitionend срабатывал. */
 @media (prefers-reduced-motion: reduce) {
   :root {
