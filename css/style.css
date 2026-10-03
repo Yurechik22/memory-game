@@ -1,0 +1,139 @@
+:root {
+  --bg: #f4f1ea;
+  --surface: #ffffff;
+  --text: #2b2a33;
+  --muted: #6d6a75;
+  --accent: #5b4cdb;
+  --accent-dark: #4436b8;
+  --card-back-1: #5b4cdb;
+  --card-back-2: #8a7cff;
+  --matched: #2fb37a;
+  --radius: 14px;
+  --shadow: 0 6px 18px rgb(43 42 51 / 0.12);
+  --flip-duration: 0.4s;
+
+  color-scheme: light;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html.is-scroll-locked,
+html.is-scroll-locked body {
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* ---------- Header ---------- */
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.header__title {
+  margin: 0;
+  font-size: 1.75rem;
+  letter-spacing: 0.02em;
+}
+
+.header__actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ---------- Buttons ---------- */
+
+.button {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 10px 16px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+.button:focus-visible,
+.card:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.button--header,
+.button--secondary {
+  background: var(--surface);
+  border-color: #ddd8e8;
+  color: var(--text);
+}
+
+.button--header:hover,
+.button--secondary:hover {
+  background: #ece8ff;
+}
+
+.button--primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.button--primary:hover {
+  background: var(--accent-dark);
+}
+
+/* ---------- Stats ---------- */
+
+.stats {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.stats__item {
+  margin: 0;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: var(--muted);
+}
+
+.stats__value {
+  color: var(--text);
+  font-weight: 700;
+}
+
+@media (max-width: 420px) {
+  .button--header {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+}
