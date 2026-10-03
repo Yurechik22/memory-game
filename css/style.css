@@ -131,6 +131,82 @@ body {
   font-weight: 700;
 }
 
+/* ---------- Board & cards ---------- */
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(8px, 2vw, 14px);
+}
+
+.card {
+  aspect-ratio: 1;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius);
+  background: none;
+  cursor: pointer;
+  perspective: 800px;
+}
+
+.board.is-locked .card,
+.card.is-open {
+  cursor: default;
+}
+
+.card__inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform var(--flip-duration) ease;
+}
+
+.card.is-open .card__inner {
+  transform: rotateY(180deg);
+}
+
+.card__back,
+.card__face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backface-visibility: hidden;
+}
+
+.card__back {
+  background:
+    radial-gradient(circle at 50% 50%, rgb(255 255 255 / 0.35) 0 14%, transparent 15%),
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 0.12) 0 6px, transparent 6px 12px),
+    linear-gradient(135deg, var(--card-back-1), var(--card-back-2));
+}
+
+.card:not(.is-open):hover .card__back {
+  filter: brightness(1.08);
+}
+
+.card__face {
+  transform: rotateY(180deg);
+  background: var(--card-color, var(--surface));
+  font-size: clamp(2rem, 9vw, 3.5rem);
+  line-height: 1;
+}
+
+.card.is-matched .card__face {
+  box-shadow: 0 0 0 3px var(--matched), var(--shadow);
+}
+
+/* Короткая, но не нулевая анимация, чтобы transitionend срабатывал. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --flip-duration: 1ms;
+  }
+}
+
 @media (max-width: 420px) {
   .button--header {
     padding: 8px 12px;
